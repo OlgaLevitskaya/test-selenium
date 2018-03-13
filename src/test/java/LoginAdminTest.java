@@ -4,18 +4,18 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 public class LoginAdminTest {
     public static WebDriver driver;
-    public static WebDriverWait wait;
     public static final String ADMIN_URL = "http://localhost/litecart/public_html/admin";
     public static final String LOGIN = "admin";
 
     @BeforeClass
     public static void beforeClass() {
         driver = new ChromeDriver();
-        wait = new WebDriverWait(driver, 10);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @Test
