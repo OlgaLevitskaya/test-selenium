@@ -6,7 +6,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 /**
  * Запуск Chrome Driver
  */
-public class BaseTest {
+public class ChromeDriverTest extends TestBase{
     public static WebDriver driver;
     public static WebDriverWait wait;
 

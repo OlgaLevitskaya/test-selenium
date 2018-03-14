@@ -12,4 +12,14 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.seleniumhq.selenium:selenium-java:3.10.0'
+    compile 'ru.stqa.selenium:webdriver-factory:4.3'
+}
+
+test {
+    //Разрешаем запуск тестов в несколько потоков
+    maxParallelForks = 10
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
 }
