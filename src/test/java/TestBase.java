@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
  * WebDriverFactory: https://github.com/barancev/webdriver-factory
  */
 public class TestBase {
+    public static final String LITECART_URL = "http://localhost/litecart/public_html";
     public static final String ADMIN_URL = "http://localhost/litecart/public_html/admin";
     public static final String LOGIN = "admin";
     public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
