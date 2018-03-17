@@ -15,6 +15,7 @@ public class LoginAdminTest {
     @BeforeClass
     public static void beforeClass() {
         driver = new ChromeDriver();
+        /*Ожидание сколько времени драйвер ждет появление элемента перед выкидванием ексепшена*/
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
