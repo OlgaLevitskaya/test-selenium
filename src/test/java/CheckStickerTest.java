@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -36,7 +37,7 @@ public class CheckStickerTest extends TestBase {
     }
 
     /**
-     * Проверка наличия title в стикере - точно мы не знаем какой там текст может быть
+     * Проверка стикера
      *
      * @param locator
      */
@@ -46,7 +47,7 @@ public class CheckStickerTest extends TestBase {
         List<WebElement> webElements = driver.findElements(By.cssSelector("div#" + locator + " li"));
         for (WebElement element : webElements) {
             System.out.println(element.findElement(By.className("name")).getText());
-            element.findElements(By.cssSelector("div.image-wrapper [title]"));
+            Assert.assertTrue(element.findElements(By.cssSelector("div.image-wrapper [title]")).size() == 1);
         }
     }
 }
