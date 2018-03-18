@@ -30,7 +30,7 @@ public class CheckStickerTest extends TestBase {
     }
 
     @Test
-    public void testBrowsingTabTest() {
+    public void testCheckSticker() {
         checkSticker(popularL);
         checkSticker(campaignsL);
         checkSticker(LastestL);
