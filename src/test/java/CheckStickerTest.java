@@ -26,7 +26,7 @@ public class CheckStickerTest extends TestBase {
 
     @Before
     public void loadUrl() {
-        driver.get(LITECART_URL);
+        driver.get(getUrlToString(litecartBuilder()));
     }
 
     @Test

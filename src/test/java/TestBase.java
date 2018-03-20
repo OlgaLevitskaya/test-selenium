@@ -1,3 +1,4 @@
+import org.apache.http.client.utils.URIBuilder;
 import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.By;
@@ -5,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,8 +15,27 @@ import java.util.concurrent.TimeUnit;
  * WebDriverFactory: https://github.com/barancev/webdriver-factory
  */
 public class TestBase {
-    public static final String LITECART_URL = "http://localhost/litecart/public_html";
-    public static final String ADMIN_URL = "http://localhost/litecart/public_html/admin";
+    private URIBuilder builder = new URIBuilder();
+
+    public URIBuilder adminBuilder() {
+        return litecartBuilder().setPath("/admin");
+    }
+
+    public URIBuilder litecartBuilder() {
+        return builder.setScheme("http").setHost("localhost/litecart/public_html");
+    }
+
+    public String getUrlToString(URIBuilder uriBuilder) {
+        String url = null;
+        try {
+            url = uriBuilder.build().toString();
+            System.out.println("Load:" + url);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return url;
+    }
+
     public static final String LOGIN = "admin";
     public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
     public WebDriver driver;
@@ -51,7 +72,11 @@ public class TestBase {
      * Логин в админку
      */
     public void loginAdmin() {
-        driver.get(ADMIN_URL);
+        loginAdmin(adminBuilder());
+    }
+
+    public void loginAdmin(URIBuilder uriBuilder) {
+        driver.get(getUrlToString(uriBuilder));
         driver.findElement(By.name("username")).sendKeys(LOGIN);
         driver.findElement(By.name("password")).sendKeys(LOGIN);
         driver.findElement(By.name("login")).click();

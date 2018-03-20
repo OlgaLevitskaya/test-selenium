@@ -18,7 +18,7 @@ import java.util.List;
 public class CheckStickerNewTest extends TestBase {
     @Before
     public void loadUrl() {
-        driver.get(LITECART_URL);
+        driver.get(getUrlToString(litecartBuilder()));
     }
 
     @Test
