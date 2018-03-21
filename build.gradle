@@ -12,6 +12,7 @@ repositories {
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'org.seleniumhq.selenium:selenium-java:3.11.0'
+    testCompile group: 'com.tngtech.java', name: 'junit-dataprovider', version: '1.13.1'
     compile 'ru.stqa.selenium:webdriver-factory:4.3'
 }
 
