@@ -3,6 +3,8 @@
 .gradle
 /out
 /gradle
+build/
+
 
 ### Idea ###
 *.iml

@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile 'org.seleniumhq.selenium:selenium-java:3.10.0'
+    testCompile 'org.seleniumhq.selenium:selenium-java:3.11.0'
     compile 'ru.stqa.selenium:webdriver-factory:4.3'
 }
 
