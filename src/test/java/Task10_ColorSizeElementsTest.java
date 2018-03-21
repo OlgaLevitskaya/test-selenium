@@ -1,10 +1,14 @@
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerOptions;
+import org.openqa.selenium.support.Color;
 import ru.stqa.selenium.factory.WebDriverPool;
+
+import java.util.List;
 
 /**
  * [x] Задание 10. Проверить, что открывается правильная страница товара
@@ -35,30 +39,63 @@ import ru.stqa.selenium.factory.WebDriverPool;
  * можно проскролировать элемент в видимую часть окна
  */
 public class Task10_ColorSizeElementsTest {
+    private static final Color GRAY = new Color(119, 119, 119, 1);
+    private static final Color RED = new Color(204, 0, 0, 1);
+    private static final String BOLD_TEXT = "700";
 
     @AfterClass
     public static void stopAllDrivers() {
         WebDriverPool.DEFAULT.dismissAll();
     }
 
-    @Test
-    public void testFirefox() {
-        commonTest(WebDriverPool.DEFAULT.getDriver(new FirefoxOptions()));
-
-    }
+//    @Test
+//    public void testFirefox() {
+//        commonTest(WebDriverPool.DEFAULT.getDriver(new FirefoxOptions()));
+//    }
 
     @Test
     public void testChrome() {
         commonTest(WebDriverPool.DEFAULT.getDriver(new ChromeOptions()));
     }
 
-    @Test
-    public void testIE() {
-        commonTest(WebDriverPool.DEFAULT.getDriver(new InternetExplorerOptions()));
-    }
+//    @Test
+//    public void testIE() {
+//        commonTest(WebDriverPool.DEFAULT.getDriver(new InternetExplorerOptions()));
+//    }
 
     private void commonTest(WebDriver driver) {
-        driver.get("http://seleniumhq.org/");
-        //driver.get("http://localhost/litecart/public_html");
+        driver.get("http://localhost/litecart/");
+        List<WebElement> elements = driver.findElements(By.cssSelector("#box-campaigns li"));
+        Assert.assertNotNull("Нет товара в блоке Campaigns", elements);
+
+        //выбрать первый товар в блоке Campaigns
+        WebElement firstItem = elements.get(0);
+
+        //сохраняем название товара
+        String name = firstItem.findElement(By.cssSelector(".name")).getText();
+        //сохраняем цены (обычная и акционная)
+        WebElement regular_price = firstItem.findElement(By.cssSelector(".regular-price"));
+        WebElement campaign_price = firstItem.findElement(By.cssSelector(".campaign-price"));
+
+        //в) обычная цена зачёркнутая и серая
+        Assert.assertEquals("Обычная цена не " + GRAY.asRgba(), GRAY.asRgba(), regular_price.getCssValue("color"));
+        Assert.assertEquals("Обычная цена не перечеркнута!", "line-through", regular_price.getCssValue("text-decoration-line"));
+
+        //г) акционная жирная и красная
+        Assert.assertEquals("Акционная цена не " + RED.asRgba(), RED.asRgba(), campaign_price.getCssValue("color"));
+        Assert.assertEquals("Акционная цена не жирная", BOLD_TEXT, campaign_price.getCssValue("font-weight"));
+
+        //д) акционная цена крупнее, чем обычная
+        Assert.assertTrue("Акционная цена Не крупнее, чем обычная", parseFontSize(regular_price) < parseFontSize(campaign_price));
+    }
+
+    /**
+     * Преобразуем размер шрифта (like 18px) к типу float для сравнения
+     *
+     * @param element
+     * @return
+     */
+    private float parseFontSize(WebElement element) {
+        return Float.parseFloat(element.getCssValue("font-size").replace("px", ""));
     }
 }
