@@ -69,8 +69,7 @@ public class Task10_ColorSizeElementsTest {
     }
 
     private void commonTest(WebDriver driver) {
-        //driver.get("http://localhost/litecart/public_html");
-        driver.get("http://localhost/litecart");
+        driver.get("http://localhost/litecart/public_html");
 
         //выбрать первый товар в блоке Campaigns
         List<WebElement> elements = driver.findElements(By.cssSelector("#box-campaigns li"));
