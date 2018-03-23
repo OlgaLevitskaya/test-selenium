@@ -150,26 +150,25 @@ public class Task10_ColorSizeElementsTest {
 
     /**
      * Преобразование цвета полученного из WebElement в Color
-     *
-     * @param element
+     * @param element с цветом
      * @return
      */
-    private Color parseColor(WebElement element) {
-        return new Color(1, 1, 1, 1).fromString(element.getCssValue("color"));
+    private java.awt.Color parseColor(WebElement element) {
+        return new Color(1, 1, 1, 1).fromString(element.getCssValue("color")).getColor();
     }
 
     //в) обычная цена зачёркнутая и серая (одинаковые значения для каналов R, G и B))
     private void checkRegularPrice(WebElement priceWrapper) {
-        Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorRegularPrice())));
-        Assert.assertTrue("Обычная цена не серая", color.getColor().getBlue() == color.getColor().getRed()
-                && color.getColor().getRed() == color.getColor().getGreen());
+        java.awt.Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorRegularPrice())));
+        Assert.assertTrue("Обычная цена не серая", color.getBlue() == color.getRed()
+                && color.getRed() == color.getGreen());
         priceWrapper.findElement(By.cssSelector("s.regular-price"));
     }
 
     //г) акционная жирная и красная (G и B имеют нулевые значения)
     private void checkCampaignPrice(WebElement priceWrapper) {
-        Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorCampaignPrice())));
-        Assert.assertTrue("Акционная цена не красная", color.getColor().getGreen() == 0 && color.getColor().getBlue() == 0);
+        java.awt.Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorCampaignPrice())));
+        Assert.assertTrue("Акционная цена не красная", color.getGreen() == 0 && color.getBlue() == 0);
         priceWrapper.findElement(By.cssSelector("strong.campaign-price"));
     }
 }
