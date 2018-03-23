@@ -42,9 +42,6 @@ import java.util.List;
  * можно проскролировать элемент в видимую часть окна
  */
 public class Task10_ColorSizeElementsTest {
-    private static final Color GRAY = new Color(119, 119, 119, 1);
-    private static final Color RED = new Color(204, 0, 0, 1);
-    private static final Color GREY_OTHER = new Color(102, 102, 102, 1);
 
     @AfterClass
     public static void stopAllDrivers() {
@@ -72,7 +69,8 @@ public class Task10_ColorSizeElementsTest {
     }
 
     private void commonTest(WebDriver driver) {
-        driver.get("http://localhost/litecart/public_html");
+        //driver.get("http://localhost/litecart/public_html");
+        driver.get("http://localhost/litecart");
 
         //выбрать первый товар в блоке Campaigns
         List<WebElement> elements = driver.findElements(By.cssSelector("#box-campaigns li"));
@@ -88,10 +86,10 @@ public class Task10_ColorSizeElementsTest {
         String campaign_price_text = price_wrapper.findElement(By.cssSelector(getSelectorCampaignPrice())).getText();
 
         //в) обычная цена зачёркнутая и серая
-        checkRegularPrice(price_wrapper, GRAY);
+        checkRegularPrice(price_wrapper);
 
         //г) акционная жирная и красная
-        checkCampaignPrice(price_wrapper, RED);
+        checkCampaignPrice(price_wrapper);
 
         //д) акционная цена крупнее, чем обычная
         checkSizePrice(price_wrapper);
@@ -111,10 +109,10 @@ public class Task10_ColorSizeElementsTest {
                 price_wrapper.findElement(By.cssSelector(getSelectorCampaignPrice())).getText(), campaign_price_text);
 
         //г) акционная жирная и красная
-        checkCampaignPrice(price_wrapper, RED);
+        checkCampaignPrice(price_wrapper);
 
         //в) обычная цена зачёркнутая и серая
-        checkRegularPrice(price_wrapper, GREY_OTHER);
+        checkRegularPrice(price_wrapper);
 
         //д) акционная цена крупнее, чем обычная
         checkSizePrice(price_wrapper);
@@ -160,15 +158,18 @@ public class Task10_ColorSizeElementsTest {
         return new Color(1, 1, 1, 1).fromString(element.getCssValue("color"));
     }
 
-    //в) обычная цена зачёркнутая и серая
-    private void checkRegularPrice(WebElement priceWrapper, Color color) {
-        Assert.assertEquals("Обычная цена не " + color, color, parseColor(priceWrapper.findElement(By.cssSelector(getSelectorRegularPrice()))));
+    //в) обычная цена зачёркнутая и серая (одинаковые значения для каналов R, G и B))
+    private void checkRegularPrice(WebElement priceWrapper) {
+        Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorRegularPrice())));
+        Assert.assertTrue("Обычная цена не серая", color.getColor().getBlue() == color.getColor().getRed()
+                && color.getColor().getRed() == color.getColor().getGreen());
         priceWrapper.findElement(By.cssSelector("s.regular-price"));
     }
 
-    //г) акционная жирная и красная
-    private void checkCampaignPrice(WebElement priceWrapper, Color color) {
-        Assert.assertEquals("Акционная цена не " + color, color, parseColor(priceWrapper.findElement(By.cssSelector(getSelectorCampaignPrice()))));
+    //г) акционная жирная и красная (G и B имеют нулевые значения)
+    private void checkCampaignPrice(WebElement priceWrapper) {
+        Color color = parseColor(priceWrapper.findElement(By.cssSelector(getSelectorCampaignPrice())));
+        Assert.assertTrue("Акционная цена не красная", color.getColor().getGreen() == 0 && color.getColor().getBlue() == 0);
         priceWrapper.findElement(By.cssSelector("strong.campaign-price"));
     }
 }
