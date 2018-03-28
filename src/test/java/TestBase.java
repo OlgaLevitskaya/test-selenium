@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TestBase {
     private URIBuilder builder = new URIBuilder();
+    public long WAIT_ELEMENTS_TIME = 10;
 
     public URIBuilder adminBuilder() {
         return litecartBuilder().setPath("/admin");
@@ -45,15 +46,15 @@ public class TestBase {
     public void start() {
         if (tlDriver.get() != null) {
             driver = tlDriver.get();
-            wait = new WebDriverWait(driver, 10);
-            driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+            wait = new WebDriverWait(driver, WAIT_ELEMENTS_TIME);
+            driver.manage().timeouts().pageLoadTimeout(WAIT_ELEMENTS_TIME, TimeUnit.SECONDS);
             return;
         }
 
         driver = new ChromeDriver();
         tlDriver.set(driver);
-        wait = new WebDriverWait(driver, 10);
-        driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
+        wait = new WebDriverWait(driver, WAIT_ELEMENTS_TIME);
+        driver.manage().timeouts().pageLoadTimeout(WAIT_ELEMENTS_TIME, TimeUnit.SECONDS);
 
         Runtime.getRuntime().addShutdownHook(
                 new Thread(() -> {
@@ -81,4 +82,42 @@ public class TestBase {
         driver.findElement(By.name("password")).sendKeys(LOGIN);
         driver.findElement(By.name("login")).click();
     }
+
+    /**
+     * Проверка наличия (С ОЖИДАНИЕМ)
+     *
+     * @param driver
+     * @param locator
+     * @return
+     */
+    public boolean isElementsPresent(WebDriver driver, By locator) {
+        try {
+            driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+            return driver.findElements(locator).size() > 0;
+        } finally {
+            driver.manage().timeouts().implicitlyWait(WAIT_ELEMENTS_TIME, TimeUnit.SECONDS);
+        }
+    }
+
+    /**
+     * Проверка отсутствия (БЕЗ ОЖИДАНИЯ)
+     *
+     * @param driver
+     * @param locator
+     * @return
+     */
+    public boolean isElementsNotPresent(WebDriver driver, By locator) {
+        try {
+            driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+            return driver.findElements(locator).size() == 0;
+        } finally {
+            driver.manage().timeouts().implicitlyWait(WAIT_ELEMENTS_TIME, TimeUnit.SECONDS);
+        }
+    }
+    /**
+     * ЯВНОЕ ОЖИДАНИЕ
+     * WebDriverWait wait = new WebDriverWait(driver, 10);
+     * WebElement element = wait.until(presenceOfElementLocated(By.name("q")));
+     *  WebElement element2 = wait.until((WebDriver d) -> d.findElement(By.name("q")));
+     */
 }

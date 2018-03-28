@@ -73,7 +73,7 @@ public class Task10_ColorSizeElementsTest {
 
         //выбрать первый товар в блоке Campaigns
         List<WebElement> elements = driver.findElements(By.cssSelector("#box-campaigns li"));
-        Assert.assertNotNull("Нет товара в блоке Campaigns", elements);
+        Assert.assertFalse("Нет товара в блоке Campaigns", elements.isEmpty());
         WebElement firstItem = elements.get(0);
 
         //сохраняем название товара
