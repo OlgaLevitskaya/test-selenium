@@ -19,6 +19,7 @@ public class IEDriverTest {
         InternetExplorerOptions options = new InternetExplorerOptions();
         /* если нельзя менять политики безопасности */
         options.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+
         /* если масштаб не 100% */
         options.setCapability(InternetExplorerDriver.IGNORE_ZOOM_SETTING, true);
         ieDriver = new InternetExplorerDriver(options);

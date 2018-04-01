@@ -72,15 +72,16 @@ public class TestBase {
     /**
      * Логин в админку
      */
-    public void loginAdmin() {
-        loginAdmin(adminBuilder());
+    public URIBuilder loginAdmin() {
+        return loginAdmin(adminBuilder());
     }
 
-    public void loginAdmin(URIBuilder uriBuilder) {
+    public URIBuilder loginAdmin(URIBuilder uriBuilder) {
         driver.get(getUrlToString(uriBuilder));
         driver.findElement(By.name("username")).sendKeys(LOGIN);
         driver.findElement(By.name("password")).sendKeys(LOGIN);
         driver.findElement(By.name("login")).click();
+        return uriBuilder;
     }
 
     /**
